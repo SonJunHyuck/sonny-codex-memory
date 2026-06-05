@@ -7,6 +7,7 @@ This file is the starting map for active Codex memory contexts.
 | Context ID | Project | Topic | Current | Status |
 | --- | --- | --- | --- | --- |
 | `bfx.eventlog` | BFX | EventLog | [current.md](../contexts/bfx/eventlog/current.md) | active |
+| `codex-memory.workflow` | Codex Memory | Workflow | [current.md](../contexts/codex-memory/workflow/current.md) | active |
 
 ## Operating Model
 
