@@ -1,81 +1,81 @@
-# Codex Memory Workflow Decisions
+# Codex 메모리 운영 흐름 결정 기록
 
-This file records durable decisions about the Codex memory system itself.
+이 파일은 Codex memory system 자체에 대한 오래 남길 결정을 기록한다.
 
-## 2026-06-05: Use A Git-Backed Memory Repo
+## 2026-06-05: Git 기반 Memory Repo 사용
 
-Decision: Use `sonny-codex-memory` as a Git-backed memory repo for Codex handoff context.
+결정: `sonny-codex-memory`를 Codex 인수인계 컨텍스트를 위한 Git 기반 메모리 저장소로 사용한다.
 
-Rationale:
+이유:
 
-- Codex chat history may be local to a device or scoped to a specific project chat.
-- Sonny wants to move between PC and Mac without losing project context.
-- Git pull and push provide a simple cross-device sync mechanism.
+- Codex chat history는 디바이스에 local로 남거나 특정 프로젝트 채팅에 묶일 수 있다.
+- Sonny는 PC와 Mac을 오가면서도 프로젝트 컨텍스트를 잃지 않고 싶다.
+- Git pull/push는 단순한 cross-device sync 메커니즘을 제공한다.
 
-Rejected alternatives:
+버린 대안:
 
-- Rely on one device's local chat history.
-- Store raw chat transcripts as the primary memory source.
+- 한 디바이스의 raw local chat history에 의존한다.
+- raw chat transcript를 주된 memory source로 저장한다.
 
-Effect:
+영향:
 
-- Work starts by pulling the memory repo and reading the relevant context.
-- Work ends by updating context files, committing, and pushing.
+- 작업은 메모리 저장소를 pull하고 관련 컨텍스트를 읽는 것으로 시작한다.
+- 작업은 컨텍스트 파일을 업데이트하고 commit/push하는 것으로 끝난다.
 
-## 2026-06-05: Separate Memory From Implementation
+## 2026-06-05: Memory와 구현 분리
 
-Decision: Treat the memory repo as a handoff and documentation layer, not the implementation workspace.
+결정: 메모리 저장소는 구현 workspace가 아니라 인수인계와 문서화 계층으로 취급한다.
 
-Rationale:
+이유:
 
-- Implementation repos should contain code, tests, and project artifacts.
-- The memory repo should contain why, what changed, what was decided, and what should happen next.
-- Multiple project contexts can coexist without polluting implementation repos.
+- 구현 저장소에는 코드, 테스트, 프로젝트 산출물이 들어가야 한다.
+- 메모리 저장소에는 왜, 무엇이 바뀌었는지, 무엇이 결정됐는지, 다음에 무엇을 해야 하는지가 들어가야 한다.
+- 여러 프로젝트 컨텍스트가 구현 저장소를 오염시키지 않고 공존할 수 있다.
 
-Effect:
+영향:
 
-- BFX implementation happens in `ProjectBFX`.
-- BFX EventLog context lives in `contexts/bfx/eventlog/`.
+- BFX 구현은 `ProjectBFX`에서 진행한다.
+- BFX EventLog 컨텍스트는 `contexts/bfx/eventlog/`에 둔다.
 
-## 2026-06-05: Organize Contexts By Project And Topic
+## 2026-06-05: 프로젝트와 토픽 단위로 컨텍스트 정리
 
-Decision: Use `contexts/<project>/<topic>/` for memory context directories.
+결정: 메모리 컨텍스트 디렉토리는 `contexts/<project>/<topic>/` 구조를 사용한다.
 
-Rationale:
+이유:
 
-- A single project can have several active topics.
-- A topic needs its own current state, decisions, timeline, and Notion seeds.
+- 하나의 프로젝트에도 여러 active topic이 생길 수 있다.
+- 각 토픽에는 독립적인 현재 상태, 결정 기록, 타임라인, Notion 재료가 필요하다.
 
-Effect:
+영향:
 
-- `bfx.eventlog` maps to `contexts/bfx/eventlog/`.
-- `codex-memory.workflow` maps to `contexts/codex-memory/workflow/`.
+- `bfx.eventlog`는 `contexts/bfx/eventlog/`로 연결된다.
+- `codex-memory.workflow`는 `contexts/codex-memory/workflow/`로 연결된다.
 
-## 2026-06-05: Keep Local Paths Device-Specific
+## 2026-06-05: Local Path는 디바이스별 정보로 유지
 
-Decision: Do not hard-code one machine's absolute paths as canonical context.
+결정: 한 기기의 절대 경로를 기준 컨텍스트로 hard-code하지 않는다.
 
-Rationale:
+이유:
 
-- Sonny will move between PC and Mac.
-- Absolute paths such as `/Users/...` only make sense on one device.
-- Repo identity should be stable across machines.
+- Sonny는 PC와 Mac을 오갈 예정이다.
+- `/Users/...` 같은 절대 경로는 한 디바이스에서만 의미가 있다.
+- 저장소 identity는 디바이스를 넘어 안정적이어야 한다.
 
-Effect:
+영향:
 
-- Use `context_id`, `repo_id`, and remote URLs as stable identifiers.
-- Store per-device checkout paths only in `_index/local-paths.md`.
+- `context_id`, `repo_id`, 원격 주소를 안정적인 식별자로 사용한다.
+- 디바이스별 체크아웃 경로는 `_index/local-paths.md`에만 저장한다.
 
-## 2026-06-05: Keep Sessions Lightweight
+## 2026-06-05: Session 기록은 가볍게 유지
 
-Decision: Keep `sessions/` as short source notes rather than exhaustive logs.
+결정: `sessions/`는 exhaustive log가 아니라 짧은 원천 기록으로 유지한다.
 
-Rationale:
+이유:
 
-- Day-to-day continuation mostly needs `current.md`, `decisions.md`, and `timeline.md`.
-- Later Notion documentation benefits from a short record of what happened and why.
-- Full chat logs are too noisy and should not be stored by default.
+- 일상적인 이어가기는 대부분 `current.md`, `decisions.md`, `timeline.md`만으로 충분하다.
+- 나중에 Notion 문서를 만들 때는 무엇이 왜 일어났는지에 대한 짧은 기록이 도움이 된다.
+- 전체 chat log는 너무 시끄럽고 기본적으로 저장할 필요가 없다.
 
-Effect:
+영향:
 
-- Session notes capture intent, changes, decisions, Notion seeds, and next actions.
+- 세션 기록은 의도, 변경, 결정, Notion 재료, 다음 작업을 기록한다.

@@ -1,7 +1,7 @@
 ---
 context_id: codex-memory.workflow
-project: Codex Memory
-topic: Workflow
+project: Codex 메모리
+topic: 운영 흐름
 status: active
 memory_repo:
   repo_id: sonny-codex-memory
@@ -12,62 +12,62 @@ project_repos:
     remote: git@github.com:SonJunHyuck/sonny-codex-memory.git
 ---
 
-# Codex Memory Workflow Current Context
+# Codex 메모리 운영 흐름 현재 컨텍스트
 
-## Purpose
+## 목적
 
-This context captures the design of Sonny's Git-backed Codex memory workflow.
+이 컨텍스트는 Sonny의 Git 기반 Codex 메모리 운영 흐름 설계를 기록한다.
 
-The goal is to let Codex continue work across PC, Mac, devices, project chats, and sessions by using a lightweight repository of durable context rather than relying on raw local chat history.
+목표는 raw local chat history에 의존하지 않고, 오래 남길 컨텍스트를 담은 가벼운 저장소를 통해 Codex가 PC, Mac, 여러 디바이스, 프로젝트 채팅, 세션을 오가며 작업을 이어갈 수 있게 하는 것이다.
 
-## Current Model
+## 현재 모델
 
-- `sonny-codex-memory` stores durable handoff context, decisions, timelines, session notes, templates, and future Notion documentation seeds.
-- Actual implementation work should happen in the relevant project repo, such as `ProjectBFX`.
-- The memory repo is read at the start of a work session and updated at the end.
-- Contexts are organized by project and topic under `contexts/<project>/<topic>/`.
-- Local checkout paths are device-specific and must not be treated as canonical.
+- `sonny-codex-memory`는 오래 남길 인수인계 컨텍스트, 결정 기록, 타임라인, 세션 기록, 템플릿, 미래 Notion 문서화 재료를 저장한다.
+- 실제 구현 작업은 `ProjectBFX` 같은 관련 프로젝트 저장소에서 진행한다.
+- 메모리 저장소는 작업 세션을 시작할 때 읽고, 끝낼 때 업데이트한다.
+- 컨텍스트는 `contexts/<project>/<topic>/` 아래에 프로젝트와 토픽 단위로 정리한다.
+- 로컬 체크아웃 경로는 디바이스마다 다르므로 기준 경로로 취급하지 않는다.
 
-## Standard Context Files
+## 표준 컨텍스트 파일
 
-- `current.md`: the latest state needed to continue work.
-- `decisions.md`: durable decisions, rationale, alternatives, and effects.
-- `timeline.md`: major milestones and direction changes.
-- `notion.md`: structured seeds for future Notion pages.
-- `sessions/YYYY/MM/*.md`: lightweight source notes from specific work sessions.
+- `current.md`: 작업을 이어가기 위해 필요한 최신 상태.
+- `decisions.md`: 오래 남길 결정, 이유, 대안, 영향.
+- `timeline.md`: 주요 마일스톤과 방향 전환.
+- `notion.md`: 미래 Notion page를 위한 구조화된 재료.
+- `sessions/YYYY/MM/*.md`: 특정 작업 세션에서 나온 가벼운 원천 기록.
 
-## Device-Agnostic Path Model
+## 디바이스 독립 경로 모델
 
-Stable identifiers:
+안정적인 식별자:
 
-- `context_id`: identifies the topic context, such as `bfx.eventlog` or `codex-memory.workflow`.
-- `repo_id`: identifies a repository across machines, such as `sonny-codex-memory` or `project-bfx`.
-- `remote`: identifies the Git repository.
+- `context_id`: `bfx.eventlog`, `codex-memory.workflow`처럼 토픽 컨텍스트를 식별한다.
+- `repo_id`: `sonny-codex-memory`, `project-bfx`처럼 디바이스를 넘어 저장소를 식별한다.
+- `remote`: Git 저장소를 식별한다.
 
-Device-specific hints:
+디바이스별 힌트:
 
-- `_index/local-paths.md` stores local checkout paths for Mac and Windows PC.
-- If a path is missing or stale, Codex should locate the repo by remote URL or ask Sonny for the current device path.
+- `_index/local-paths.md`는 Mac과 Windows PC의 로컬 체크아웃 경로를 저장한다.
+- 경로가 없거나 오래됐으면 Codex는 원격 주소로 저장소를 찾거나 Sonny에게 현재 디바이스의 경로를 물어본다.
 
-## Operating Prompts
+## 운영 Prompt
 
-Start of work:
+작업 시작:
 
 ```text
 <Project/topic> 작업 시작하자.
 현재 디바이스의 sonny-codex-memory checkout을 pull하고,
-<context_id> context를 읽어서 현재 상태 요약한 뒤 이어서 작업해줘.
+<context_id> 컨텍스트를 읽어서 현재 상태 요약한 뒤 이어서 작업해줘.
 ```
 
-End of work:
+작업 종료:
 
 ```text
-오늘 작업 내용을 sonny-codex-memory의 <context_id> context에 요약하고 commit/push해줘.
+오늘 작업 내용을 sonny-codex-memory의 <context_id> 컨텍스트에 요약하고 commit/push해줘.
 ```
 
-## Next Actions
+## 다음 작업
 
-- Fill in Windows PC local path hints once known.
-- Confirm `ProjectBFX` remote URL and add it to `_index/repositories.md`.
-- As new projects/topics emerge, create matching context directories from templates.
-- Later, use `notion.md`, `decisions.md`, `timeline.md`, and session notes to create Notion documentation.
+- Windows PC 로컬 경로를 알게 되면 `_index/local-paths.md`에 채운다.
+- `ProjectBFX` 원격 주소를 확인해서 `_index/repositories.md`에 추가한다.
+- 새 프로젝트/토픽이 생기면 템플릿을 기반으로 해당 컨텍스트 디렉토리를 만든다.
+- 나중에 `notion.md`, `decisions.md`, `timeline.md`, 세션 기록을 이용해 Notion 문서를 만든다.

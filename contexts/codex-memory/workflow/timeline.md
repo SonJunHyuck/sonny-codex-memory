@@ -1,13 +1,13 @@
-# Codex Memory Workflow Timeline
+# Codex 메모리 운영 흐름 타임라인
 
 ## 2026-06-05
 
-- Discussed the problem of continuing Codex conversations across PC and Mac.
-- Considered using a repository as a handoff layer for Codex context.
-- Decided that the memory repo should support multiple projects and topics.
-- Created the initial `sonny-codex-memory` structure.
-- Added `bfx.eventlog` as the first project/topic context.
-- Added templates for current context, decisions, timeline, and session notes.
-- Added Notion seeds so later documentation can explain what was built and why.
-- Corrected the model so absolute local paths are device-specific hints rather than canonical paths.
-- Added this `codex-memory.workflow` context to capture the design of the memory workflow itself.
+- PC와 Mac을 오가며 Codex 대화를 이어가는 문제를 논의했다.
+- Codex 컨텍스트를 넘겨받기 위한 인수인계 계층으로 저장소를 사용하는 방식을 검토했다.
+- 메모리 저장소가 여러 프로젝트와 토픽을 지원해야 한다고 결정했다.
+- 초기 `sonny-codex-memory` 구조를 만들었다.
+- 첫 project/topic 컨텍스트로 `bfx.eventlog`를 추가했다.
+- 현재 컨텍스트, 결정 기록, 타임라인, 세션 기록 템플릿을 추가했다.
+- 나중에 무엇을 왜 만들었는지 설명할 수 있도록 Notion seed를 추가했다.
+- 절대 로컬 경로를 기준 경로가 아니라 디바이스별 힌트로 다루도록 모델을 수정했다.
+- 메모리 운영 흐름 자체의 설계를 기록하기 위해 `codex-memory.workflow` 컨텍스트를 추가했다.

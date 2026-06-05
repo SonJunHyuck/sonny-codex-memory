@@ -1,5 +1,5 @@
-# <Project Topic> Timeline
+# <Project Topic> 타임라인
 
 ## YYYY-MM-DD
 
-- <milestone>
+- <마일스톤>

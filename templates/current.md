@@ -12,28 +12,28 @@ project_repos:
     remote: <remote-url>
 ---
 
-# <Project Topic> Current Context
+# <Project Topic> 현재 컨텍스트
 
-## Purpose
+## 목적
 
-Why this context exists and what continuity problem it solves.
+이 컨텍스트가 왜 존재하는지, 어떤 이어가기 문제를 해결하는지 적는다.
 
-## Operating Flow
+## 운영 흐름
 
-How Codex should start work for this context.
+Codex가 이 컨텍스트의 작업을 어떻게 시작해야 하는지 적는다.
 
-## Current Understanding
+## 현재 이해
 
-- <current fact or summary>
+- <현재 사실 또는 요약>
 
-## Important Files
+## 중요한 파일
 
-- <path or file note>
+- <경로 또는 파일 메모>
 
-## Local Path Notes
+## 로컬 경로 메모
 
-Local checkout paths are device-specific. Put stable repo identity in this file and device-specific checkout hints in `_index/local-paths.md`.
+로컬 체크아웃 경로는 디바이스마다 다르다. 이 파일에는 안정적인 저장소 식별자를 적고, 디바이스별 체크아웃 힌트는 `_index/local-paths.md`에 둔다.
 
-## Next Actions
+## 다음 작업
 
-- <next action>
+- <다음 작업>

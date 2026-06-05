@@ -1,20 +1,20 @@
 # YYYY-MM-DD <context-id>
 
-## Intent
+## 의도
 
 
-## Changed
+## 변경
 
-- <change>
+- <변경>
 
-## Decisions
+## 결정
 
-- <decision>
+- <결정>
 
-## Notion Seeds
+## Notion 재료
 
-- <documentation seed>
+- <문서화 재료>
 
-## Next
+## 다음
 
-- <next action>
+- <다음 작업>

@@ -1,26 +1,26 @@
-# Local Path Hints
+# 로컬 경로 힌트
 
-These paths are device-specific conveniences. They should not be treated as canonical across PC and Mac.
+이 경로들은 디바이스별 편의 정보다. PC와 Mac을 오갈 때 기준 정보로 취급하지 않는다.
 
-## Current Mac
+## 현재 Mac
 
-| Repo ID | Local Path |
+| Repo ID | 로컬 경로 |
 | --- | --- |
 | `sonny-codex-memory` | `/Users/sonny/Workspace/Dev/sonny-codex-memory` |
 | `project-bfx` | `/Users/sonny/Workspace/Dev/ProjectBFX` |
 
 ## Windows PC
 
-| Repo ID | Local Path |
+| Repo ID | 로컬 경로 |
 | --- | --- |
 | `sonny-codex-memory` | TBD |
 | `project-bfx` | TBD |
 
-## Usage
+## 사용법
 
-When starting work on any device:
+어떤 디바이스에서든 작업을 시작할 때:
 
-1. Pull the memory repo from wherever it is checked out locally.
-2. Read `_index/repositories.md` for stable repo identity.
-3. Use this file only to resolve local checkout paths for the current device.
-4. If a listed path is stale or missing, find the repo by remote or ask Sonny for the path.
+1. 현재 디바이스에 checkout된 위치에서 메모리 저장소를 pull한다.
+2. 안정적인 저장소 식별자는 `_index/repositories.md`에서 확인한다.
+3. 이 파일은 현재 디바이스의 로컬 체크아웃 경로를 찾을 때만 사용한다.
+4. 적힌 경로가 오래됐거나 없으면 원격 주소로 저장소를 찾거나 Sonny에게 경로를 물어본다.
