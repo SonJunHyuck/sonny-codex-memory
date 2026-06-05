@@ -1,2 +1,2 @@
 # sonny-codex-memory
-코
+Personal context memory for continuing Codex work across devices, projects, and sessions.
