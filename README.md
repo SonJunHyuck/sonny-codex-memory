@@ -32,6 +32,7 @@ contexts/
       current.md         # Latest working context
       decisions.md       # Durable decisions
       timeline.md        # Important milestones
+      notion.md          # Seeds for later Notion documentation
 
 sessions/
   YYYY/
@@ -40,8 +41,26 @@ sessions/
 
 templates/
   current.md
+  decisions.md
+  timeline.md
   session.md
 ```
+
+## Context Model
+
+Contexts are organized by project and topic:
+
+```text
+contexts/
+  bfx/
+    eventlog/
+      current.md
+      decisions.md
+      timeline.md
+      notion.md
+```
+
+Use `current.md`, `decisions.md`, and `timeline.md` for day-to-day continuity. Use `sessions/` as lightweight source notes when a work session creates decisions, useful rationale, or future documentation material. Use `notion.md` as a staging area for Notion pages about what was built, why it exists, and how it works.
 
 ## Safety Rules
 
