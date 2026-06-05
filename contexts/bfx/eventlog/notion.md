@@ -17,6 +17,8 @@ The system separates two concerns:
 - `sonny-codex-memory`: long-term context, handoff summaries, decisions, and documentation seeds.
 - `ProjectBFX`: actual implementation code, tests, and project artifacts.
 
+Repository identity should be stable across devices, while local checkout paths are device-specific. Notion documentation should refer primarily to repo ids, remotes, and context ids, not one machine's absolute filesystem path.
+
 ## Why This Exists
 
 Sonny works across devices and may discuss multiple projects or multiple topics within one project. A single chat thread or a single project workspace does not naturally preserve the right context everywhere.
@@ -31,6 +33,7 @@ The memory repo gives Codex a durable, Git-backed source of truth that can be pu
 - Keep daily session notes lightweight.
 - Use decisions and timeline files as the source of truth for later documentation.
 - Use `notion.md` as a bridge from working memory to reader-facing Notion pages.
+- Keep local checkout paths in a separate device-specific index.
 
 ## Future Notion Structure
 
@@ -49,5 +52,6 @@ Possible sections for a Notion page:
 ## Open Questions
 
 - What is the exact canonical local path and remote URL for `ProjectBFX`?
+- What are the Windows PC checkout paths for the memory repo and ProjectBFX?
 - Should each mature context get a matching Notion page, or should multiple contexts roll up into project-level pages?
 - Should Notion publishing be manual, semi-automated, or fully requested through Codex?

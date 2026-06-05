@@ -3,10 +3,12 @@ context_id: <project.topic>
 project: <project>
 topic: <topic>
 status: active
-memory_repo: /Users/sonny/Workspace/Dev/sonny-codex-memory
+memory_repo:
+  repo_id: sonny-codex-memory
+  remote: git@github.com:SonJunHyuck/sonny-codex-memory.git
 project_repos:
-  - name: <repo-name>
-    local_path: <absolute-local-path>
+  - repo_id: <repo-id>
+    name: <repo-name>
     remote: <remote-url>
 ---
 
@@ -27,6 +29,10 @@ How Codex should start work for this context.
 ## Important Files
 
 - <path or file note>
+
+## Local Path Notes
+
+Local checkout paths are device-specific. Put stable repo identity in this file and device-specific checkout hints in `_index/local-paths.md`.
 
 ## Next Actions
 

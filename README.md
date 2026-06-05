@@ -25,6 +25,8 @@ At the end of a session, ask Codex to update the relevant context, create a sess
 ```text
 _index/
   active.md              # Active contexts and quick links
+  repositories.md        # Stable repo identities and remotes
+  local-paths.md         # Device-specific checkout path hints
 
 contexts/
   <project-or-area>/
@@ -61,6 +63,8 @@ contexts/
 ```
 
 Use `current.md`, `decisions.md`, and `timeline.md` for day-to-day continuity. Use `sessions/` as lightweight source notes when a work session creates decisions, useful rationale, or future documentation material. Use `notion.md` as a staging area for Notion pages about what was built, why it exists, and how it works.
+
+Do not treat one machine's absolute filesystem path as canonical. PC and Mac checkouts can live in different directories. Prefer stable identifiers such as `context_id`, `repo_id`, and Git remotes; keep local paths in `_index/local-paths.md` as hints only.
 
 ## Safety Rules
 

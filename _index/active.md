@@ -12,12 +12,13 @@ This file is the starting map for active Codex memory contexts.
 
 - Work inside the actual project repo chat when implementing code.
 - Use this memory repo as the long-term handoff and context layer.
-- At the start of work, pull this repo and read the relevant context.
+- At the start of work, pull this repo from the current device's local checkout and read the relevant context.
 - At the end of work, update the context, commit, and push this repo.
+- Local filesystem paths differ between Mac and PC. Use `_index/repositories.md` for stable repo identity and `_index/local-paths.md` only as device-specific path hints.
 
 ## Known Project Repos
 
-| Project | Local Path | Role |
+| Project | Repo ID | Role |
 | --- | --- | --- |
-| BFX | `/Users/sonny/Workspace/Dev/ProjectBFX` | Actual implementation repo |
-| sonny-codex-memory | `/Users/sonny/Workspace/Dev/sonny-codex-memory` | Codex memory and handoff repo |
+| BFX | `project-bfx` | Actual implementation repo |
+| sonny-codex-memory | `sonny-codex-memory` | Codex memory and handoff repo |
