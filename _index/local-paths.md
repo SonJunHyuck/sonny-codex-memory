@@ -13,8 +13,8 @@
 
 | Repo ID | 로컬 경로 |
 | --- | --- |
-| `sonny-codex-memory` | TBD |
-| `project-bfx` | TBD |
+| `sonny-codex-memory` | `C:\Users\ahkff\sonny-codex-memory` |
+| `project-bfx` | `C:\Users\ahkff\ProjectBFX` |
 
 ## 사용법
 
