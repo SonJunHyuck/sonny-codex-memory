@@ -75,3 +75,74 @@ contexts/
 영향:
 
 - 토픽이 충분히 성숙하면 Codex는 `notion.md`, `decisions.md`, `timeline.md`를 이용해 Notion page를 만들거나 업데이트할 수 있다.
+
+## 2026-06-09: Campaign HUD EventLog는 런타임 서비스와 View로 분리
+
+결정: Campaign EventLog는 이벤트 발생 지점(`CampaignEventTrigger`), 로그 저장/발행 서비스(`BfxCampaignEventLogService`), HUD 표시 View(`BfxCampaignEventLogView`)를 분리해서 구현한다.
+
+이유:
+
+- 이벤트 발생 로직과 UI 표시 로직이 직접 묶이면 Campaign 트리거를 수정할 때 HUD 구현까지 같이 건드리게 된다.
+- 서비스가 로그 목록과 `OnLogAdded` 이벤트를 가지면, HUD는 현재 로그를 다시 그리거나 새 로그만 추가할 수 있다.
+- GPM InfiniteScroll 기반 UI를 유지하면서도 로그 데이터 모델은 별도로 관리할 수 있다.
+
+버린 대안:
+
+- `CampaignEventTrigger`가 HUD prefab이나 TMP text를 직접 찾아서 쓰는 방식.
+- 로그를 단순 `Debug.Log`로만 남기고 플레이어 HUD에는 표시하지 않는 방식.
+
+영향:
+
+- `CampaignEventTrigger.TriggerFinalEvent(...)`는 최종 이벤트를 고른 뒤 `BfxCampaignEventLogService.Instance.AddLog(...)`만 호출한다.
+- `BfxCampaignEventLogService`는 최대 50개 로그를 보관하고, 초과분은 오래된 항목부터 제거한다.
+- `BfxCampaignEventLogView`는 `OnEnable`에서 서비스 이벤트를 구독하고 `OnDisable`에서 해제한다.
+
+## 2026-06-09: EventLog 표시 형식은 현재 게임 시간과 이벤트 라벨을 포함
+
+결정: 로그 표시 문자열은 `BfxCampaignEventLogEntry.DisplayText`에서 `[Day N  HH:MM] [라벨] 위치 설명` 형식으로 만든다.
+
+이유:
+
+- Campaign 로그는 단순 알림보다 "언제, 어디서, 어떤 종류의 이벤트가 발생했는지"를 빠르게 복기할 수 있어야 한다.
+- `BfxGameTimeService`의 Day/Hour/Minute 값을 같이 넣으면 Campaign 진행 흐름과 로그가 연결된다.
+
+버린 대안:
+
+- 이벤트 설명만 표시하는 단순 문자열 로그.
+- View에서 표시 형식을 조합하는 방식.
+
+영향:
+
+- 로그 entry는 `CampaignEventTrigger.EventType`, description, locationName, day/hour/minute를 가진 값 타입으로 유지된다.
+- EventType 라벨은 현재 코드 switch로 관리되며, 나중에 현지화나 데이터 테이블로 빼야 할 수 있다.
+
+## 2026-06-09: EventLog는 Campaign scene 수명주기를 따른다
+
+결정: `BfxCampaignEventLogService`는 `DontDestroyOnLoad`로 보존하지 않고, Campaign scene이 사라지면 EventLog도 함께 사라지는 정책으로 종결한다.
+
+이유:
+
+- EventLog는 현재 Campaign HUD에서 진행 중 이벤트를 복기하기 위한 런타임 UI 기록이다.
+- scene 전환 이후까지 보존할 명확한 UX 요구가 아직 없다.
+- 현재 `OnDestroy()`에서 static `_instance`를 null로 정리하므로 scene unload 뒤 낡은 singleton 참조가 남는 위험도 낮다.
+
+영향:
+
+- `DontDestroyOnLoad`는 추가하지 않는다.
+- 저장/로드 기능도 이번 EventLog 범위에서는 만들지 않는다.
+- 나중에 Campaign 영구 기록이 필요해지면 EventLog가 아니라 별도 Campaign history/save topic으로 다룬다.
+
+## 2026-06-09: 현지화/데이터화와 로그 보관 정책은 현재 구현 유지
+
+결정: 이벤트 라벨/문구의 localization 또는 data table 분리는 이번 작업 범위에서 진행하지 않는다. `_maxEntryCount` 50과 저장/로드 미지원 상태도 유지한다.
+
+이유:
+
+- Play 흐름에서 EventLog 정상작동이 확인되었고, 현재 목표는 HUD 로그 기능 완성이다.
+- 문구 데이터화, 보관 개수 조정, 저장/로드는 더 큰 Campaign UX/데이터 정책과 함께 결정하는 편이 낫다.
+
+영향:
+
+- `BfxCampaignEventLogEntry.DisplayText`와 현재 EventType label switch 구조를 유지한다.
+- `_maxEntryCount` 기본값 50을 유지한다.
+- EventLog 토픽은 완료 상태로 닫는다.

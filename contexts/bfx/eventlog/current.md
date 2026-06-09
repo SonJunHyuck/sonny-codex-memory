@@ -2,23 +2,23 @@
 context_id: bfx.eventlog
 project: BFX
 topic: EventLog
-status: active
+status: completed
 memory_repo:
   repo_id: sonny-codex-memory
   remote: git@github.com:SonJunHyuck/sonny-codex-memory.git
 project_repos:
   - repo_id: project-bfx
-    name: ProjectBFX
-    remote: TBD
+    name: Project-BFX
+    remote: https://github.com/redforce01/Project-BFX.git
 ---
 
 # BFX EventLog 현재 컨텍스트
 
 ## 목적
 
-이 컨텍스트는 Codex가 하나의 local chat history에 의존하지 않고, 여러 디바이스와 프로젝트 채팅, 세션을 오가며 BFX EventLog 작업을 이어갈 수 있게 하기 위해 존재한다.
+이 컨텍스트는 BFX Campaign HUD EventLog 구현 상태를 Codex가 여러 디바이스와 세션에서 이어갈 수 있도록 남긴 인수인계 문서다.
 
-메모리 저장소는 구현 workspace가 아니다. 무엇이 결정됐는지, 현재 어디까지 왔는지, 다음에 무엇을 해야 하는지 같은 오래 남길 컨텍스트를 저장한다.
+`sonny-codex-memory`는 구현 workspace가 아니다. 실제 코드는 `Project-BFX`에 있고, 이 파일에는 현재 구조, 주요 파일, 결정, 다음 작업처럼 오래 남길 컨텍스트만 둔다.
 
 ## 운영 흐름
 
@@ -41,26 +41,37 @@ bfx.eventlog 컨텍스트 읽어서 현재 상태 요약한 뒤
 
 ## 현재 이해
 
-- `sonny-codex-memory`는 장기 메모리와 인수인계 저장소다.
-- `ProjectBFX`는 실제 구현 저장소다.
-- 로컬 체크아웃 경로는 디바이스마다 다르며 기준 경로로 취급하지 않는다.
-- 컨텍스트는 프로젝트와 토픽 단위로 정리한다.
-- BFX EventLog의 기준 컨텍스트 경로는 `contexts/bfx/eventlog/`다.
-- 핵심 작업 파일은 `current.md`, `decisions.md`, `timeline.md`, `notion.md`다.
+- 실제 구현 저장소는 `Project-BFX`이고, Windows PC 로컬 경로는 `C:\Users\ahkff\Project-BFX`다.
+- 원격 주소는 `https://github.com/redforce01/Project-BFX.git`이다.
+- Campaign EventLog는 Campaign 주행 중 발생한 이벤트를 HUD에 누적 표시하는 시스템이다.
+- `CampaignEventTrigger`가 Player 트리거 진입 시 총 발동 확률과 이벤트별 가중치를 기준으로 이벤트를 뽑는다.
+- 선택된 이벤트는 `BfxCampaignEventLogService.Instance.AddLog(...)`로 기록된다.
+- `BfxCampaignEventLogService`는 최대 50개 로그를 보관하고 `OnLogAdded` 이벤트로 View에 알린다.
+- `BfxCampaignEventLogView`는 GPM `InfiniteScroll`을 사용해 로그를 표시하고 새 로그가 들어오면 하단으로 이동한다.
+- 로그 한 줄은 `BfxCampaignEventLogEntry.DisplayText`에서 `[Day N  HH:MM] [이벤트 라벨] 위치 설명` 형식으로 만들어진다.
+- 구현 근거 커밋: `81406770 [Campaign] HUD Event Log 시스템 추가`.
+- 최근 BFX 작업 트리에는 ProjectSettings/Thumbs.db 관련 미커밋 변경이 존재했다. EventLog 문서화와 직접 관련 없는 변경으로 취급한다.
 
 ## 중요한 파일
 
-- `current.md`: 현재 상태와 다음 인수인계 요약.
-- `decisions.md`: 오래 남길 결정, 이유, 대안, 영향.
-- `timeline.md`: 주요 변경과 마일스톤의 시간순 기록.
-- `notion.md`: 나중에 Notion 문서화를 위한 구조화된 재료.
-- `sessions/YYYY/MM/*.md`: 개별 작업 세션의 가벼운 원천 기록.
-- `_index/repositories.md`: 안정적인 저장소 identity와 원격 주소.
-- `_index/local-paths.md`: 디바이스별 체크아웃 경로 힌트.
+- `Project-BFX/Assets/01_PROJECT BFX/Scripts/Game/Campaign/ExpeditionSystem/CampaignEventTrigger.cs`: 캠페인 이벤트 발동, 가중치 선택, EventLog 기록 진입점.
+- `Project-BFX/Assets/01_PROJECT BFX/Scripts/Game/Campaign/HUD/BfxCampaignEventLogService.cs`: 로그 보관, 최대 개수 제한, View 알림.
+- `Project-BFX/Assets/01_PROJECT BFX/Scripts/Game/Campaign/HUD/BfxCampaignEventLogEntry.cs`: 로그 데이터와 표시 문자열.
+- `Project-BFX/Assets/01_PROJECT BFX/Scripts/Game/Campaign/HUD/BfxCampaignEventLogView.cs`: GPM InfiniteScroll 기반 HUD 표시.
+- `Project-BFX/Assets/01_PROJECT BFX/Scripts/Game/Campaign/HUD/InfiniteScrollDataEventLog.cs`: InfiniteScroll 데이터 어댑터.
+- `Project-BFX/Assets/01_PROJECT BFX/Scripts/Game/Campaign/HUD/InfiniteScrollItemEventLog.cs`: InfiniteScroll 아이템을 TMP View에 바인딩.
+- `Project-BFX/Assets/01_PROJECT BFX/Scripts/Game/Campaign/HUD/BfxCampaignEventLog.cs`: TMP 텍스트를 가진 단일 로그 row view.
+- `Project-BFX/Assets/01_PROJECT BFX/Art/UI/Campaign/Campaign.EventLog.prefab`: EventLog UI 프리팹.
+- `Project-BFX/Assets/01_PROJECT BFX/Art/UI/UI Prefabs/UI.CampaignHUD.prefab`: Campaign HUD에 EventLog를 연결한 프리팹.
 
-## 다음 작업
+## 종결 상태
 
-- `ProjectBFX` 원격 주소를 확인한다.
-- Windows PC 체크아웃 경로를 알게 되면 `_index/local-paths.md`에 추가한다.
-- BFX EventLog 구현 작업이 시작되면 프로젝트 코드를 읽고, 이 계획 컨텍스트를 실제 구현 컨텍스트로 갱신한다.
-- 세션 기록은 짧고 유용하게 유지하되, 결정이나 Notion으로 옮길 만한 이유가 생긴 세션은 꼭 기록한다.
+- 2026-06-09에 Unity Play 흐름에서 EventLog 정상작동을 확인했다.
+- Campaign HUD/EventLog 프리팹 연결은 `UI.CampaignHUD.prefab`의 `BfxCampaignEventLogView` 아래에 GPM `InfiniteScroll`이 있고, row prefab인 `Campaign.EventLog.prefab`에 `InfiniteScrollItemEventLog`, `BfxCampaignEventLog`, TMP 텍스트 참조가 이어지는지만 확인하면 된다.
+- `BfxCampaignEventLogService`는 scene 전환 후 보존하지 않는다. `DontDestroyOnLoad`는 추가하지 않으며, scene이 넘어가면 로그도 함께 사라지는 정책으로 종결한다.
+- 로그 문구/이벤트 라벨의 현지화나 데이터화는 이번 EventLog 작업 범위에서 진행하지 않는다. 현재 코드 기반 표시 형식을 유지한다.
+- `_maxEntryCount` 50과 저장/로드 미지원 정책도 이번 범위에서는 유지한다.
+
+## 후속 작업
+
+현재 EventLog 토픽은 완료 상태다. 이후 다시 열 경우에는 Campaign 전체 HUD UX 개편, localization/data table 도입, Campaign 기록 저장 같은 별도 토픽으로 분리하는 편이 좋다.

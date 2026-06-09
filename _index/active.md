@@ -6,7 +6,7 @@
 
 | Context ID | 프로젝트 | 토픽 | 현재 컨텍스트 | 상태 |
 | --- | --- | --- | --- | --- |
-| `bfx.eventlog` | BFX | EventLog | [current.md](../contexts/bfx/eventlog/current.md) | 활성 |
+| `bfx.eventlog` | BFX | EventLog | [current.md](../contexts/bfx/eventlog/current.md) | 완료 |
 | `codex-memory.workflow` | Codex 메모리 | 운영 흐름 | [current.md](../contexts/codex-memory/workflow/current.md) | 활성 |
 
 ## 운영 모델

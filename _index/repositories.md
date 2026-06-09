@@ -13,4 +13,4 @@
 | Repo ID | 역할 | Remote | Local 경로 힌트 |
 | --- | --- | --- | --- |
 | `sonny-codex-memory` | Codex 메모리와 인수인계 저장소 | `git@github.com:SonJunHyuck/sonny-codex-memory.git` | `_index/local-paths.md` 참고 |
-| `project-bfx` | BFX 구현 저장소 | TBD | `_index/local-paths.md` 참고 |
+| `project-bfx` | BFX 구현 저장소 | `https://github.com/redforce01/Project-BFX.git` | `_index/local-paths.md` 참고 |
