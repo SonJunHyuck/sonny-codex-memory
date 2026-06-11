@@ -75,9 +75,14 @@ project_repos:
 
 ## 다음 작업
 
+- 2026-06-11 논의 기준으로, 다음 구현은 구조를 갈아엎기보다 좌표계/소유권/갱신 책임을 단단하게 만드는 방향이 좋다.
+- 1순위: `clampContentToViewport`와 중앙 고정 `Current Marker`의 의미를 정리한다.
+  - "항상 플레이어/RegionNavigator를 중앙에 둔다"가 우선이면 clamp를 끄는 쪽이 자연스럽다.
+  - "지도 바깥 빈 공간을 절대 보이지 않게 한다"가 우선이면 content가 clamp된 만큼 current marker도 중앙에서 벗어나 실제 위치를 표시해야 한다.
+- 2순위: `CampaignMinimapView`를 `CampaignMinimap.prefab`에 직접 저장하고, `CampaignHUD`의 auto-add는 fallback으로만 남긴다.
+- 3순위: 캡처 bounds는 코드 기본값에 박아두기보다 `CampaignMinimapCaptureData` 같은 ScriptableObject 또는 명시적인 데이터 에셋으로 분리한다.
+- 4순위: `Minimap Content`, `Route Lines`, `Region Markers`, `Current Marker`는 가능하면 프리팹에 미리 두고, 런타임 생성은 복구/호환 안전망으로 낮춘다.
+- 5순위: `FindObjectsOfType<Region>()` 의존을 줄이고, `RouteMap.connections` 또는 별도 provider를 통해 미니맵이 사용할 region 목록을 명시적으로 받는 방향을 검토한다.
 - 전체 월드맵 UI가 생기면 미니맵 클릭 훅을 `CampaignWorldMapView` 열기로 연결한다.
-- `CampaignMinimapView`가 `CampaignMinimap.json`을 직접 읽어 bounds를 자동 적용할지 결정한다.
 - Campaign 씬/프리팹의 기존 missing script 에러를 별도로 정리한다.
-- 가능하면 `CampaignMinimapView`를 `CampaignMinimap.prefab`에 직접 저장해서 런타임 auto-add 의존을 줄인다.
 - 최종 아트 방향이 정해지면 현재 생성형 사각 마커/라인을 실제 UI 스프라이트로 교체한다.
-

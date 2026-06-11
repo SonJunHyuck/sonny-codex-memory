@@ -75,3 +75,21 @@ UI 계층은 mask가 있는 고정 viewport, 큰 content, 배경 이미지, rout
 
 영향:
 `CampaignMinimapView.Clicked` 이벤트가 있고, `CampaignHUD`는 현재 예약 로그를 찍는다. 추후 이 부분을 월드맵 UI 열기로 교체하면 된다.
+
+## 2026-06-11: 다음 개선 방향은 좌표계와 프리팹 소유권 정리
+
+결정 후보:
+현재 `CampaignMinimapView` 구현 방향은 유지하되, 다음 작업은 좌표계 의미와 프리팹 소유권을 먼저 정리한다.
+
+이유:
+현재 구현은 프로토타입으로는 닫혀 있지만, `clampContentToViewport`가 켜진 상태에서 `Current Marker`가 무조건 중앙에 고정되면 지도 끝 근처에서 실제 navigator 위치와 중앙 마커가 어긋날 수 있다. 또한 `CampaignHUD`가 런타임에 `CampaignMinimapView`를 auto-add하는 구조는 안전망으로는 좋지만, Inspector에서 설정과 참조를 관리하기 어렵다.
+
+우선순위:
+- `clampContentToViewport`와 중앙 고정 marker 정책을 먼저 결정한다.
+- `CampaignMinimapView`를 `CampaignMinimap.prefab`에 직접 붙이고, `CampaignHUD` auto-add는 fallback으로 남긴다.
+- 캡처 bounds는 `CampaignMinimap.json` 직접 런타임 로드보다 ScriptableObject 데이터 에셋으로 굳히는 방안을 우선 검토한다.
+- UI 계층(`Minimap Content`, `Route Lines`, `Region Markers`, `Current Marker`)은 프리팹에 명시하고, 런타임 생성은 누락 복구 용도로 낮춘다.
+- region 목록은 장기적으로 `FindObjectsOfType<Region>()`보다 `RouteMap.connections` 또는 별도 provider에서 명시적으로 공급받는 방향을 검토한다.
+
+영향:
+다음 구현은 기능 추가보다 안정화 성격이 강하다. 좌표 변환, 프리팹 세팅, 런타임 fallback 경계를 먼저 정리하면 추후 전체 월드맵 UI와 실제 마커 아트 교체가 더 안전해진다.
