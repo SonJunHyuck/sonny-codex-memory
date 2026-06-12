@@ -1,4 +1,4 @@
-﻿# Project-BFX HUD 미니맵 결정 기록
+# Project-BFX HUD 미니맵 결정 기록
 
 이 파일은 `bfx.hud-minimap` 컨텍스트의 주요 결정을 기록한다.
 
@@ -93,3 +93,49 @@ UI 계층은 mask가 있는 고정 viewport, 큰 content, 배경 이미지, rout
 
 영향:
 다음 구현은 기능 추가보다 안정화 성격이 강하다. 좌표 변환, 프리팹 세팅, 런타임 fallback 경계를 먼저 정리하면 추후 전체 월드맵 UI와 실제 마커 아트 교체가 더 안전해진다.
+
+## 2026-06-12: HUD 미니맵은 라인 없이 지역 마커 중심으로 정리
+
+결정:
+HUD 미니맵에서는 노선 라인 마커를 사용하지 않고, 배경 PNG, 지역 마커, 중앙 고정 현재 위치 마커만 표시한다.
+
+이유:
+사용자가 Line 마커는 필요 없다고 명확히 결정했다. 미니맵은 작은 HUD 영역이므로 노선 표시보다 현재 위치와 이동 가능한 지역을 빠르게 보는 것이 우선이다.
+
+변경:
+- `CampaignMinimapView`에서 `Route Lines`, `RebuildRoutes()`, `RouteLineEntry`, 라인 색/두께 필드를 제거했다.
+- `CampaignMinimap.prefab`에서 `Route Lines` 오브젝트를 제거했다.
+- `RouteMap`은 라인을 그리기 위해서가 아니라, 지역 마커 클릭 가능 여부와 이동 가능 Region 판단을 위해 계속 사용한다.
+
+영향:
+미니맵 UI 계층은 `Minimap Content` 아래 `Raw Image`와 `Region Markers`만 두고, `Current Marker`는 viewport 직속 중앙 고정 요소로 남는다.
+
+## 2026-06-12: 캡처 bounds는 CampaignMinimapCaptureData 에셋으로 고정
+
+결정:
+캡처 bounds와 배경 texture 참조는 `CampaignMinimapCaptureData` ScriptableObject로 분리하고, `CampaignMinimap.asset`을 런타임 기준 데이터로 사용한다.
+
+이유:
+코드 기본값이나 JSON 직접 로드보다 Unity 에셋 참조로 관리하는 것이 프리팹 연결, Inspector 확인, 재캡처 갱신에 더 안전하다.
+
+변경:
+- `CampaignMinimapCaptureData.cs`를 추가했다.
+- `CampaignMinimap.asset`을 `Assets/01_PROJECT BFX/Art/UI/Campaign/Minimap` 아래에 두고, `CampaignMinimap.png`와 bounds 값을 참조하게 했다.
+- `CampaignMinimapCaptureWindow`가 PNG 캡처 후 같은 이름의 `.asset`을 생성/갱신하도록 했다.
+- `CampaignMinimapView`는 `captureData`가 있으면 texture, bounds, content size를 해당 데이터로 덮어쓴다.
+
+영향:
+추후 전체 월드맵 UI도 같은 `CampaignMinimapCaptureData`를 재사용할 수 있다. `CampaignMinimap.json`은 사람이 확인하는 보조 메타데이터로 남긴다.
+
+## 2026-06-12: 프리팹 소유권과 주석 정리
+
+결정:
+`CampaignMinimapView`는 `CampaignMinimap.prefab`에 직접 붙인 상태를 기준으로 하고, 런타임 생성 로직은 누락 복구용 fallback으로 둔다.
+
+변경:
+- `CampaignMinimap.prefab`에 `Minimap Content`, `Region Markers`, `Current Marker`를 명시했다.
+- `CampaignMinimapView`, `CampaignMinimapCaptureData`, `CampaignMinimapCaptureWindow`에 한국어 주석을 추가했다.
+- 변수 주석은 짧은 명사형 인라인 주석으로 정리하고, 메서드 주석은 역할 설명 중심으로 남겼다.
+
+영향:
+Inspector에서 미니맵 구조와 참조를 확인하기 쉬워졌고, 다음 작업자는 미니맵의 좌표 변환/캡처/마커 갱신 흐름을 빠르게 파악할 수 있다.
